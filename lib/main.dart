@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       onGenerateRoute: AppRouter.onGenerateRoute,
         navigatorKey: AppRouter.navKey,
-        initialRoute: AppRouteStrings.registerScreen,
+        initialRoute: AppRouteStrings.homeScreen,
     );
   }
 }
