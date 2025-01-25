@@ -21,19 +21,26 @@ TextEditingController messageController = TextEditingController();
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        centerTitle: true,
-        title: Column(
+        title: Row(
           children: [
-            Text(widget.arguments.sendersName,      
-            ),
-            Text('Active Now', style: style.copyWith(
-              color: Colors.grey
-            ),)
-          ],
-        ),
-        leading: CircleAvatar(
+            CircleAvatar(
+              radius: 25,
                     backgroundImage: NetworkImage(widget.arguments.imageUrl),
                   ),
+                  SizedBox(width: 8,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.arguments.sendersName,      
+                ),
+                Text('Active Now', style: style.copyWith(
+                  color: Colors.grey
+                ),)
+              ],
+            ),
+          ],
+        ),
+        
        
       ),
       bottomSheet: Form(
@@ -49,7 +56,7 @@ TextEditingController messageController = TextEditingController();
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey.shade300),
+                    //border: Border.all(color: Colors.grey.shade300),
                   ),
                   child: Row(
                     children: [
@@ -58,9 +65,15 @@ TextEditingController messageController = TextEditingController();
                           validator: (a) =>
                               (a ?? "").length < 2 ? "Inavlid message" : null,
                           controller: messageController,
-                          decoration: const InputDecoration(
-                            hintText: 'Type a message...',
-                            border: InputBorder.none,
+                          decoration: InputDecoration(
+                            hintText: 'Write your message...',
+                             focusedBorder: OutlineInputBorder(
+           borderSide: const BorderSide(
+            color: AppColors.appColor,
+          ),
+          borderRadius: BorderRadius.circular(8),
+       
+        ),
                           ),
                         ),
                       ),

@@ -136,7 +136,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   topLeft: const Radius.circular(30),
                     topRight: const Radius.circular(30), )
               ),
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.fromLTRB(8, 30, 8, 8),
               child: ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: fullNames.length,
@@ -169,8 +169,9 @@ class _MessageScreenState extends State<MessageScreen> {
                         color: Colors.grey,
                         fontWeight: FontWeight.w400
                     ),),
+                   
                   );
-               
+              
                 }
                 ),
             )
