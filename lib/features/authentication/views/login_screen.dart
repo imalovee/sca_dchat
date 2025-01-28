@@ -84,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 70,
                 ), 
                 AppButton(
+                  loading: authProvider.loading,
               text: 'Login',
               action: ()async{
                 if (formKey.currentState?.validate() ?? false) {

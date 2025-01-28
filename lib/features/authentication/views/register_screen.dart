@@ -145,7 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       if(req.error != null){
                         AppRouter.toastMessage(req.error ?? "");
                       }else{
-                        AppRouter.pushClear(AppRouteStrings.homeScreen);
+                        AppRouter.pushClear(AppRouteStrings.loginScreen);
                       }
                 }
               },
