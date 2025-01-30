@@ -1,21 +1,42 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:sca_dchat_app/features/authentication/viewModel/auth_provider.dart';
+import 'package:sca_dchat_app/features/home/models/chat_model.dart';
+import 'package:sca_dchat_app/features/home/models/user_model.dart';
+import 'package:sca_dchat_app/features/home/viewModel/chat_provider.dart';
+import 'package:sca_dchat_app/features/services/firebase_service.dart';
 import 'package:sca_dchat_app/shared/colors.dart';
 import 'package:sca_dchat_app/shared/constants.dart';
 import 'package:sca_dchat_app/shared/notification/app_route.dart';
 
 class InboxScreen extends StatefulWidget {
-  const InboxScreen({super.key, required this.arguments});
+  const InboxScreen({super.key,  this.selectedUser});
 
-  final UsersParams arguments;
+  // final UsersParams arguments;
+ final UserModel? selectedUser;
 
   @override
   State<InboxScreen> createState() => _InboxScreenState();
 }
 
 class _InboxScreenState extends State<InboxScreen> {
+  
 TextEditingController messageController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState(){
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      return context.read<ChatProvider>().setUserModel(
+        model: context.read<AuthProvider>().userModel);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,13 +46,13 @@ TextEditingController messageController = TextEditingController();
           children: [
             CircleAvatar(
               radius: 25,
-                    backgroundImage: NetworkImage(widget.arguments.imageUrl),
+                    backgroundImage: NetworkImage(widget.selectedUser?.img ?? ""),
                   ),
                   SizedBox(width: 8,),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.arguments.sendersName,      
+                Text(widget.selectedUser?.firstNamae ?? "",      
                 ),
                 Text('Active Now', style: style.copyWith(
                   color: Colors.grey
@@ -80,7 +101,11 @@ TextEditingController messageController = TextEditingController();
                       IconButton(
                         onPressed: (){
                           if(_formKey.currentState?.validate() ?? false){
-                            messageController.text;
+                            context.read<ChatProvider>().sendMsg(
+                              
+                              recieversId: widget.selectedUser?.uid ?? "",
+                              message: messageController.text);
+                            messageController.clear();
                           }
                         },
                          icon: Icon(Icons.send))
@@ -107,20 +132,51 @@ TextEditingController messageController = TextEditingController();
                 ),),
               ),
               SizedBox(height: 17,),
-              ChatBubble(
-                message: 'Hello!, John Araham', 
-                isSentByMe: true, 
-                time: '10:30 AM'
-                ),
-                SizedBox(height: 17,),
-                ChatBubble(
-                  name: widget.arguments.sendersName,
-                  img: widget.arguments.imageUrl,
-                  message: 'Hello ! Nazrul How are you?',
-                   isSentByMe: false,
-                    time: '10:30 AM',
-          
-                    )
+              StreamBuilder(
+                  stream: context.read<ChatProvider>().getMsgs(
+                      recieversId: widget.selectedUser?.uid ?? ""),
+                  builder: (context, snapshot){
+                    if(snapshot.connectionState == ConnectionState.waiting){
+                      return Center(child: CircularProgressIndicator(),);
+                    } else if(snapshot.hasError){
+                      return const SizedBox(
+                          height: 200,
+                          child: Center(
+                              child: Text("Can not fetch messages now")));
+                    } else if((snapshot.data?.size ?? 0) < 1 ){
+                      return const SizedBox(
+                          height: 200,
+                          child: Center(child: Text("No messages yet")));
+                    }
+                    final listofChats = snapshot.data?.docs ?? [];
+                    final chats = List<ChatModel>.from(
+                        listofChats.map((e)=> ChatModel.fromJson(e.data())
+                        )
+                    );
+
+                     chats.sort((a, b)=> (b.time ?? DateTime.now())
+                     .compareTo(a.time ?? DateTime.now())
+                     
+                     );
+                    return Expanded(
+                      child: ListView.builder(
+                          itemCount: chats.length,
+                          reverse: true,
+                        itemBuilder: (context, index){
+                          final each = chats[index];
+                      
+                          return ChatBubble(
+                            name: widget.selectedUser?.firstNamae,
+                              img: widget.selectedUser?.img,
+                              message: each.msg ?? "",
+                              isSentByMe: each.id == context.read<ChatProvider>().userModel?.uid ,
+                              time: DateFormat("hh:mm a").format(each.time ?? DateTime.now())
+                          );
+                      
+                      }),
+                    );
+                 }
+                )
             ],
           ),
         )
@@ -130,15 +186,15 @@ TextEditingController messageController = TextEditingController();
 }
 
 
-class UsersParams{
+// class UsersParams{
 
-  UsersParams( {
-   required this.sendersName, required this.imageUrl,
-  });
+//   UsersParams( {
+//    required this.sendersName, required this.imageUrl,
+//   });
 
-   final String sendersName;
-  final String imageUrl;
-}
+//    final String sendersName;
+//   final String imageUrl;
+// }
 
 
 class ChatBubble extends StatelessWidget {
