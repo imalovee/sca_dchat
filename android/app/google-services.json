@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "701195652674",
+    "project_id": "dchat-4bb6d",
+    "storage_bucket": "dchat-4bb6d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701195652674:android:1ea9bf4748c5ba7ea367db",
+        "android_client_info": {
+          "package_name": "com.example.sca_dchat_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKB1jg25_8zxHPx7HJ6zrCj9Qh4cVQGi4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

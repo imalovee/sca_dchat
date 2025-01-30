@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sca_dchat_app/features/authentication/viewModel/auth_provider.dart';
 import 'package:sca_dchat_app/features/home/views/inbox_screen.dart';
 import 'package:sca_dchat_app/shared/colors.dart';
 import 'package:sca_dchat_app/shared/constants.dart';
@@ -13,6 +16,7 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
+  
 
   final List<Map<String, String>> firstNames = [
    {
@@ -70,6 +74,19 @@ class _MessageScreenState extends State<MessageScreen> {
    },
    ];
 
+    @override
+    void initState(){
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_){
+          final authProvider = context.read<AuthProvider>();
+    authProvider.fetchAllUsers();  // Fetch all users.
+    authProvider.fetchUserData();
+        }
+      );
+
+      super.initState();
+    }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,8 +102,17 @@ class _MessageScreenState extends State<MessageScreen> {
           fontWeight: FontWeight.w500
         ),),
         actions: [
-          CircleAvatar(
-           backgroundImage: NetworkImage('https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=2971&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+          Consumer<AuthProvider>(
+            builder: (BuildContext context, AuthProvider value, Widget? child) {
+              final imgUrl = value.userModel?.img ?? "";
+              if (kDebugMode) {
+                print("User Image URL: ${value.userModel?.img}");
+              }
+              return CircleAvatar(
+             backgroundImage: imgUrl.isNotEmpty  ? NetworkImage(imgUrl) : null
+            );
+              },
+            
           ),
           SizedBox(width: 12,)
         ],
@@ -98,35 +124,45 @@ class _MessageScreenState extends State<MessageScreen> {
             SizedBox(
               height: 25,
             ),
-            SizedBox(
-              height: 150,
-              child: ListView.builder(
-                padding: EdgeInsets.all(16),
-                scrollDirection: Axis.horizontal,
-                itemCount: firstNames.length,
-                itemBuilder: (context, index){
-                  final name = firstNames[index]['name'];
-                  final image = firstNames[index]['image'];
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 35,
-                            backgroundImage: image != null? NetworkImage(image) : null
-                          ),
-                          SizedBox(height: 16,),
-                          Text(name ?? "max", style: style.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500
-                          ),)
-                        ],
-                      ),
-                      SizedBox(width: 18,)
-                    ],
-                  );
-                }),
+            Consumer<AuthProvider>(
+              builder: (BuildContext context, AuthProvider auth, Widget? child) { 
+                final users = auth.allUsers;
+                if(users.isEmpty){
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                  return SizedBox(
+                height: 150,
+                child: ListView.builder(
+                  padding: EdgeInsets.all(16),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: users.length,
+                  itemBuilder: (context, index){
+                    final each = users[index];
+                    final image = each.img ?? "";
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 35,
+                              backgroundImage: image.isNotEmpty?  NetworkImage(image) : null
+                            ),
+                            SizedBox(height: 16,),
+                            Text(each.firstNamae ?? "max", style: style.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500
+                            ),)
+                          ],
+                        ),
+                        SizedBox(width: 18,)
+                      ],
+                    );
+                  }),
+              );
+               },
+              
             ),
             Container(
              height: 600,
@@ -136,7 +172,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   topLeft: const Radius.circular(30),
                     topRight: const Radius.circular(30), )
               ),
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.fromLTRB(8, 30, 8, 8),
               child: ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: fullNames.length,
@@ -169,8 +205,9 @@ class _MessageScreenState extends State<MessageScreen> {
                         color: Colors.grey,
                         fontWeight: FontWeight.w400
                     ),),
+                   
                   );
-               
+              
                 }
                 ),
             )
