@@ -124,3 +124,14 @@ List imgs = [
   "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
 ];
+
+  String chatUids({
+  required String uid1,
+  required String uid2
+}){
+  List uids = [uid1, uid2];
+  uids.sort();
+  String ChatIDs =  uids.fold("", (id, uid) => "$id$uid");
+
+  return ChatIDs;
+}

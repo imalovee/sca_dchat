@@ -18,33 +18,7 @@ class MessageScreen extends StatefulWidget {
 class _MessageScreenState extends State<MessageScreen> {
   
 
-  final List<Map<String, String>> firstNames = [
-   {
-    'name': 'Max', 
-    'image': 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=2971&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-   },
-   {
-    'name': 'Andi',
-    'image': "https://images.unsplash.com/photo-1445053023192-8d45cb66099d?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-   },
-   {'name': 'Martins',
-   'image': "https://plus.unsplash.com/premium_photo-1664536392896-cd1743f9c02c?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-   },
-   {'name': 'Dean',
-   'image': "https://plus.unsplash.com/premium_photo-1664536392896-cd1743f9c02c?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-   },
-    {
-    'name': 'John', 
-    'image': 'https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?q=80&w=2971&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-   },
-   {
-    'name': "Sam",
-    'image': "https://images.unsplash.com/photo-1445053023192-8d45cb66099d?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-   },
-   {'name': 'Doe',
-   'image': "https://plus.unsplash.com/premium_photo-1664536392896-cd1743f9c02c?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-   },
-  ];
+  
 
    List<Map<String, String>> fullNames = [
       {
@@ -106,7 +80,7 @@ class _MessageScreenState extends State<MessageScreen> {
             builder: (BuildContext context, AuthProvider value, Widget? child) {
               final imgUrl = value.userModel?.img ?? "";
               if (kDebugMode) {
-                print("User Image URL: ${value.userModel?.img}");
+                // print("User Image URL: ${value.userModel?.img}");
               }
               return CircleAvatar(
              backgroundImage: imgUrl.isNotEmpty  ? NetworkImage(imgUrl) : null
@@ -143,18 +117,26 @@ class _MessageScreenState extends State<MessageScreen> {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 35,
-                              backgroundImage: image.isNotEmpty?  NetworkImage(image) : null
-                            ),
-                            SizedBox(height: 16,),
-                            Text(each.firstNamae ?? "max", style: style.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500
-                            ),)
-                          ],
+                        GestureDetector(
+                          onTap: (){
+                            AppRouter.push(AppRouteStrings.inboxScreen,
+                            args: each
+                            );
+
+                          },
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 35,
+                                backgroundImage: image.isNotEmpty?  NetworkImage(image) : null
+                              ),
+                              SizedBox(height: 16,),
+                              Text(each.firstNamae ?? "max", style: style.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500
+                              ),)
+                            ],
+                          ),
                         ),
                         SizedBox(width: 18,)
                       ],
@@ -180,13 +162,13 @@ class _MessageScreenState extends State<MessageScreen> {
                   final fullname = fullNames[index]['name'];
                   final img = fullNames[index]['image'];
                   return ListTile(
-                    onTap: (){
-                      AppRouter.push(
-                        AppRouteStrings.inboxScreen,
-                        args: UsersParams(sendersName: fullname!, 
-                        imageUrl: img!)
-                        );
-                    },
+                    // onTap: (){
+                    //   AppRouter.push(
+                    //     AppRouteStrings.inboxScreen,
+                    //     args: UsersParams(sendersName: fullname!, 
+                    //     imageUrl: img!)
+                    //     );
+                    // },
                     leading: CircleAvatar(
                       radius: 30,
                       backgroundImage: img != null? NetworkImage(img) : null

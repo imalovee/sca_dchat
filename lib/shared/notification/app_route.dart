@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sca_dchat_app/features/authentication/views/login_screen.dart';
 import 'package:sca_dchat_app/features/authentication/views/register_screen.dart';
+import 'package:sca_dchat_app/features/home/models/chat_model.dart';
+import 'package:sca_dchat_app/features/home/models/user_model.dart';
 import 'package:sca_dchat_app/features/home/views/customers_screen.dart';
 import 'package:sca_dchat_app/features/home/views/home_screen.dart';
 import 'package:sca_dchat_app/features/home/views/inbox_screen.dart';
@@ -29,7 +31,7 @@ class AppRouter{
 
          case AppRouteStrings.inboxScreen:
         return CupertinoPageRoute(builder: (_) =>  InboxScreen(
-          arguments: settings.arguments as UsersParams,
+          selectedUser: settings.arguments as UserModel,
           
         ));
 

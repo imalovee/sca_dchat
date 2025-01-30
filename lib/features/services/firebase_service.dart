@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:sca_dchat_app/features/home/models/chat_model.dart';
 import 'package:sca_dchat_app/features/home/models/user_model.dart';
 import 'package:sca_dchat_app/shared/constants.dart';
 
@@ -82,4 +83,57 @@ Future <({bool? login, String? error})> loginUser({
       return [];
     }
   }
+
+    Future<void> sendMessage({
+      required String uid1,
+      required String uid2,
+      required ChatModel chatModel})async{
+    try {
+       List uids = [uid1, uid2];
+  uids.sort();
+  String chatIDs =  uids.fold("", (id, uid) => "$id$uid");
+
+     await firestore.collection('messages')
+     .doc(chatIDs)
+     .collection('chats')
+     .add(chatModel.toJson());
+    
+    } catch (e) {
+      print("Could not send message: $e");
+    }
   }
+
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getMessages({
+    required String uid1,
+    required String uid2,
+}){
+  try{
+    List uids = [uid1, uid2];
+    uids.sort();
+    String chatIDs =  uids.fold("", (id, uid) => "$id$uid");
+    return firestore.collection('messages')
+    .doc(chatIDs)
+    .collection('chats')
+        
+    .snapshots();
+  }catch(e){
+    print("Could not fetch messages: $e");
+    rethrow;
+  }
+  }
+
+  }
+
+
+ 
+
+  // ChatModel(
+  //       firstName: chatModel.firstName,
+  //       lastName: chatModel.lastName,
+  //       id: auth.currentUser?.uid,
+  //       image: imgs[Random().nextInt(imgs.length)],
+  //       msg: chatModel.msg,
+  //       lastMsg: chatModel.lastMsg,
+  //       lastMsgTime: chatModel.lastMsgTime,
+  //       time: chatModel.time
