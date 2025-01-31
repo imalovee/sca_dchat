@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sca_dchat_app/features/authentication/viewModel/auth_provider.dart';
@@ -71,7 +72,7 @@ TextEditingController messageController = TextEditingController();
           children: [
             SafeArea(
               child: Container(
-                 margin: const EdgeInsets.only(left: 20, right: 20, bottom: 50),
+                 margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
@@ -117,10 +118,10 @@ TextEditingController messageController = TextEditingController();
       ) ,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(18.0),
+          padding:  EdgeInsets.fromLTRB(18, 18, 18, 60.h),
           child: Column(
             children: [
-              SizedBox(height: 17,),
+              SizedBox(height: 27.h,),
               Container(
                 padding:  const EdgeInsets.all(12.0),
                 decoration: BoxDecoration(
@@ -139,8 +140,8 @@ TextEditingController messageController = TextEditingController();
                     if(snapshot.connectionState == ConnectionState.waiting){
                       return Center(child: CircularProgressIndicator(),);
                     } else if(snapshot.hasError){
-                      return const SizedBox(
-                          height: 200,
+                      return  SizedBox(
+                          height: 200.h,
                           child: Center(
                               child: Text("Can not fetch messages now")));
                     } else if((snapshot.data?.size ?? 0) < 1 ){

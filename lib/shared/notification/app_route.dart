@@ -4,9 +4,9 @@ import 'package:sca_dchat_app/features/authentication/views/register_screen.dart
 import 'package:sca_dchat_app/features/home/models/chat_model.dart';
 import 'package:sca_dchat_app/features/home/models/user_model.dart';
 import 'package:sca_dchat_app/features/home/views/customers_screen.dart';
-import 'package:sca_dchat_app/features/home/views/home_screen.dart';
+import 'package:sca_dchat_app/features/home/views/bottom_nav_screen.dart';
 import 'package:sca_dchat_app/features/home/views/inbox_screen.dart';
-import 'package:sca_dchat_app/features/home/views/message_screen.dart';
+import 'package:sca_dchat_app/features/home/views/home_screen.dart';
 
 
 import 'package:flutter/cupertino.dart';
@@ -24,7 +24,7 @@ class AppRouter{
         return CupertinoPageRoute(builder: (_) => const RegisterScreen());
 
       case AppRouteStrings.homeScreen:
-        return CupertinoPageRoute(builder: (_) => const HomeScreen());
+        return CupertinoPageRoute(builder: (_) => const BottomNavScreen());
 
         case AppRouteStrings.customerScreen:
         return CupertinoPageRoute(builder: (_) => const CustomersScreen());
@@ -40,7 +40,7 @@ class AppRouter{
         
       case AppRouteStrings.messageScreen:
         return CupertinoPageRoute(
-            builder: (_) => MessageScreen(
+            builder: (_) => HomeScreen(
                   
                 ));
       

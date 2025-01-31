@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sca_dchat_app/features/authentication/viewModel/auth_provider.dart';
 import 'package:sca_dchat_app/features/home/viewModel/chat_provider.dart';
@@ -28,16 +29,25 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<AuthProvider>(create:(_)=> AuthProvider(firebaseService)),
         ChangeNotifierProvider<ChatProvider>(create: (_)=> ChatProvider(firebaseService))
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        onGenerateRoute: AppRouter.onGenerateRoute,
-          navigatorKey: AppRouter.navKey,
-          initialRoute: AppRouteStrings.registerScreen,
+      child: ScreenUtilInit(
+        designSize: Size(376, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (_, child){
+          return  MaterialApp(
+            debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          onGenerateRoute: AppRouter.onGenerateRoute,
+            navigatorKey: AppRouter.navKey,
+            initialRoute: AppRouteStrings.registerScreen,
+        );
+        },
+       
       ),
     );
   }

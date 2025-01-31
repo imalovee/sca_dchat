@@ -123,6 +123,30 @@ Future <({bool? login, String? error})> loginUser({
   }
   }
 
+  Stream<ChatModel?> getLastMessages({
+   
+    required String uid2,
+}){
+  try{
+    List uids = [auth.currentUser?.uid, uid2];
+    uids.sort();
+    String chatIDs =  uids.fold("", (id, uid) => "$id$uid");
+    return firestore.collection('messages')
+    .doc(chatIDs)
+    .collection('chats')
+     .orderBy('time', descending: true) // Get the most recent message first
+    .limit(1)    
+    .snapshots()
+    .map((snapshot){
+      if(snapshot.docs.isEmpty) return null;
+      return ChatModel.fromJson(snapshot.docs.first.data());
+    });
+  }catch(e){
+    print("Could not fetch messages: $e");
+    rethrow;
+  }
+  }
+
   }
 
 
