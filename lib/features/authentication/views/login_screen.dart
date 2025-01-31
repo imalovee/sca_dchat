@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sca_dchat_app/features/authentication/viewModel/auth_provider.dart';
 import 'package:sca_dchat_app/shared/colors.dart';
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                 ),
-                SizedBox(height: 12,),
+                SizedBox(height: 12.w,),
                 AppTextInput(
                   label: 'Password',
                     controller: passwordController,
@@ -81,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),)),
                 ),
                 SizedBox(
-                  height: 70,
+                  height: 70.h,
                 ), 
                 AppButton(
                   loading: authProvider.loading,
@@ -100,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
               },
               ),
-               SizedBox(height: 16,),
+               SizedBox(height: 16.h,),
               Text('Forgot your password?',
               style: style.copyWith(
                 fontSize: 16,

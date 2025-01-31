@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sca_dchat_app/features/authentication/viewModel/auth_provider.dart';
 import 'package:sca_dchat_app/shared/colors.dart';
@@ -63,7 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                    (a ?? "").length > 3? null : 'Invalid name';
                   },
                 )),
-                SizedBox(width: 12,),
+                SizedBox(width: 12.w,),
                 Expanded
                 (child: AppTextInput(
                   label: 'Last Name',
@@ -74,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ))
                ],
               ),
-              SizedBox(height: 12,),
+              SizedBox(height: 12.h,),
               AppTextInput(
                 label: 'Email Address',
                   controller: emailController,
@@ -84,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     }
                   },
               ),
-              SizedBox(height: 12,),
+              SizedBox(height: 12.h,),
               AppTextInput(
                 label: 'Password',
                   controller: passwordController,
@@ -110,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           
-            SizedBox(height: 20,),
+            SizedBox(height: 20.h,),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -129,7 +130,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ],
             ),
             SizedBox(
-              height: 35,
+              height: 35.h,
             ),
             AppButton(
               loading: authProvider.loading  ,

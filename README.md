@@ -1,6 +1,11 @@
 # sca_dchat_app
 
-A new Flutter project.
+This is a chatapp built with flutter.
+This app authenticates users with firebase Auth, and also store's user data with firestre.
+Upon Login, current user and view all the other registered and available users in the Home screen.
+In the inbox_screen, Chats between users are saved/stored to firebase and also fetched back in realtime using stream builder.
+Also, last mesages/chats between users are fetched back to the home screen alongsde the time of last messages.
+The state of the app is managed with the provider package.
 
 ## Getting Started
 
