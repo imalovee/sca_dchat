@@ -35,13 +35,7 @@ class ChatProvider extends ChangeNotifier{
        lastMsgTime: DateTime.now()
     ));
 
-    //  imah -arNfBJ3P43fMlrAcg7FzMQSzqv43 t32bder6PzYVVvaj9WETnl3YNR83
-    //   arNfBJ3P43fMlrAcg7FzMQSzqv43" t32bder6PzYVVvaj9WETnl3YNR83"- candace
-
-    //   5ysKm5j6vqakoNKKjh3m3lMWQwm2 -greg
-    //   JVpDMLeRycVZ7vhUEHKhRFUnJ0r1 -kevin
-
-
+   
   }
  Stream<QuerySnapshot<Map<String, dynamic>>> getMsgs({
     required String recieversId
@@ -51,5 +45,13 @@ class ChatProvider extends ChangeNotifier{
       uid2: firebaseService.auth.currentUser?.uid ?? ""
   );
   }
-  
+
+   Stream<ChatModel?> getLastMsgs({
+     required String recieversId
+   }){
+     return firebaseService.getLastMessages(
+   
+    uid2: recieversId);
+   }
+ 
 }
